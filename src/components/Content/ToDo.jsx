@@ -1,12 +1,11 @@
 /**
  * @author Kaden Badalian
  *
- * @filename Home.jsx
- * @date 4/7/20
+ * @filename ToDo.js
+ * @date 4/20/20
  */
 
 import React from 'react';
-import { useSelector } from 'react-redux';
 import {
   Container, Typography,
 } from '@material-ui/core';
@@ -18,22 +17,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Home = () => {
-  const authenticated = useSelector((state) => state.global.authenticated);
-  const name = useSelector((state) => state.global.user.name);
+const ToDo = () => {
   const classes = useStyles();
 
   return (
     <Container className={classes.mainContainer}>
       <Typography component="h1" variant="h3">
-        {
-          authenticated ? (
-            `Welcome, ${name}!`
-          ) : 'Home Page'
-        }
+        ToDo
       </Typography>
     </Container>
   );
 };
 
-export default Home;
+export default ToDo;

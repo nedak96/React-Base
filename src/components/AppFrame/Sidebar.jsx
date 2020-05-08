@@ -1,7 +1,7 @@
 /**
  * @author Kaden Badalian
  *
- * @filename actionTypes.js
+ * @filename Sidebar.jsx
  * @date 4/7/20
  */
 
@@ -20,7 +20,7 @@ import {
   ViewComfy as BrowseIcon,
 } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
-import { toggleSidebar } from '../../redux/actions/globalActions';
+import { toggleSidebar } from '../../redux/actions/global';
 
 const useStyles = makeStyles({
   sidebar: {
@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 
 const Sidebar = () => {
   const classes = useStyles();
-  const sidebarOpen = useSelector((state) => state.globalReducer.sidebarOpen);
+  const sidebarOpen = useSelector((state) => state.global.sidebarOpen);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -46,7 +46,13 @@ const Sidebar = () => {
     >
       <div className={classes.sidebarContent}>
         <List>
-          <ListItem button onClick={() => history.push('/')}>
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/');
+              dispatch(toggleSidebar());
+            }}
+          >
             <ListItemIcon>
               <MenuIcon />
             </ListItemIcon>
@@ -54,7 +60,13 @@ const Sidebar = () => {
               Home
             </ListItemText>
           </ListItem>
-          <ListItem button onClick={() => history.push('/browse')}>
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/browse');
+              dispatch(toggleSidebar());
+            }}
+          >
             <ListItemIcon>
               <BrowseIcon />
             </ListItemIcon>

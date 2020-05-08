@@ -1,70 +1,51 @@
 /**
  * @author Kaden Badalian
  *
- * @filename actionTypes.js
+ * @filename requests.js
  * @date 4/7/20
  */
 
-const GET = 'get';
-const PUT = 'put';
-const POST = 'post';
-const DELETE = 'delete';
-const REQUEST_HEADERS = {
-  'Content-Type': 'application/json',
-};
+import axios from 'axios';
 
-function buildRequest(verb, options) {
-  const requestHeaders = { ...REQUEST_HEADERS };
+const instance = axios.create({
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+});
 
-  // Adds `Authorization` header to request if token parameter is defined
-  // if (options.token) requestHeaders.Authorization = `Bearer ${options.token}`;
-
-  // Returns request object
-  // const req = { method: verb, headers: new Headers(requestHeaders), credentials: 'include' };
-  const req = { method: verb, headers: new Headers(requestHeaders) };
-
-  // Appends body to request if it's defined
-  if (options && options.body) req.body = JSON.stringify(options.body);
-
-  // Returns the request
-  return req;
-}
-
-export const $GET = (url, options = {}) => fetch(url, buildRequest(GET, options))
-  .then((res) => {
-    if (res.redirected) {
-      return res;
+export const $GET = (url) => instance.get(url)
+  .then((res) => res.data)
+  .catch((error) => {
+    if (error.response) {
+      throw error.response.data;
     }
-    if (res.ok) {
-      return res.json();
-    }
-    throw new Error(res.statusText);
-  })
-  .catch((error) => { throw error; });
+    throw new Error(error);
+  });
 
-export const $POST = (url, options = {}) => fetch(url, buildRequest(POST, options))
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+export const $POST = (url, body) => instance.post(url, body)
+  .then((res) => res.data)
+  .catch((error) => {
+    if (error.response) {
+      throw error.response.data;
     }
-    throw new Error(res.statusText);
-  })
-  .catch((error) => { throw error; });
+    throw new Error(error);
+  });
 
-export const $PUT = (url, options = {}) => fetch(url, buildRequest(PUT, options))
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+export const $PUT = (url, body) => instance.put(url, body)
+  .then((res) => res.data)
+  .catch((error) => {
+    if (error.response) {
+      throw error.response.data;
     }
-    throw new Error(res.statusText);
-  })
-  .catch((error) => { throw error; });
+    throw new Error(error);
+  });
 
-export const $DEL = (url, options = {}) => fetch(url, buildRequest(DELETE, options))
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
+export const $DEL = (url) => instance.delete(url)
+  .then((res) => res.data)
+  .catch((error) => {
+    if (error.response) {
+      throw error.response.data;
     }
-    throw new Error(res.statusText);
-  })
-  .catch((error) => { throw error; });
+    throw new Error(error);
+  });

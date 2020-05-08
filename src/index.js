@@ -1,17 +1,25 @@
+/* eslint-disable react/jsx-filename-extension */
 /**
  * @author Kaden Badalian
  *
- * @filename actionTypes.js
+ * @filename index.js
  * @date 4/7/20
  */
 
+import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from './redux/store';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  App,
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>,
   document.getElementById('root'),
 );
 

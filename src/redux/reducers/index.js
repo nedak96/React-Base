@@ -1,19 +1,14 @@
-/**
- * @author Kaden Badalian
- *
- * @filename actionTypes.js
- * @date 4/7/20
- */
-
 import { combineReducers } from 'redux';
-import browseReducer from './browseReducer';
-import globalReducer from './globalReducer';
-import homeReducer from './homeReducer';
+import global from './global';
+import signIn from './signIn';
+import signUp from './signUp';
+import localstorage from './localstorage';
 
-const rootReducer = combineReducers({
-  globalReducer,
-  homeReducer,
-  browseReducer,
+const rootReducer = () => combineReducers({
+  global,
+  signIn,
+  signUp,
+  localstorage,
 });
 
 export default rootReducer;

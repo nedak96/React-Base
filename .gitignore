@@ -1,0 +1,28 @@
+# Created by Kaden Badalian
+
+# Node Modules.
+node_modules/
+
+# production
+/build
+
+# Logs and errors.
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Internal config files.
+*.iml
+*.xml
+*.ini
+*.toml
+
+# Ignore Mac files.
+.DS_Store
+
+# Ignore env files.
+.env
+
+# Ignore yarn.lock
+yarn.lock
