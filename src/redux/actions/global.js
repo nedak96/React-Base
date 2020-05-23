@@ -9,55 +9,42 @@ import { createAction } from '@reduxjs/toolkit';
 import {
   TOGGLE_SIDEBAR,
   LOGOUT,
-  LOGOUT_SUCCESS,
-  LOGOUT_ERROR,
-  CHECK_SESSION,
-  CHECK_SESSION_ERROR,
-  SESSION_FOUND,
-  SESSION_NOT_FOUND,
+  VALIDATE_TOKEN,
+  TOKEN_NOT_VALID,
+  TOKEN_VALID,
+  VALIDATE_TOKEN_ERROR,
+  SET_TOKEN,
 } from '../actions';
+import { UNAUTHORIZED } from '../../constants/responseCodes';
 import { $GET } from '../../utils/requests';
 
 const usersAPI = 'api/v1/users';
 
-export const checkSession = () => (dispatch) => {
+export const validateToken = () => (dispatch) => {
   dispatch({
-    type: CHECK_SESSION,
+    type: VALIDATE_TOKEN,
   });
-  return $GET(`${usersAPI}/check-session`)
-    .then((res) => {
-      if (res.sessionValid) {
+  return $GET(`${usersAPI}/validate-token`)
+    .then((res) => (
+      dispatch({
+        type: TOKEN_VALID,
+        payload: res.user,
+      })
+    ))
+    .catch((error) => {
+      if (error.status === UNAUTHORIZED) {
         return dispatch({
-          type: SESSION_FOUND,
-          payload: res,
+          type: TOKEN_NOT_VALID,
         });
       }
       return dispatch({
-        type: SESSION_NOT_FOUND,
+        type: VALIDATE_TOKEN_ERROR,
       });
-    })
-    .catch(() => (
-      dispatch({
-        type: CHECK_SESSION_ERROR,
-      })
-    ));
+    });
 };
 
-export const logout = () => (dispatch) => {
-  dispatch({
-    type: LOGOUT,
-  });
-  return $GET(`${usersAPI}/logout`)
-    .then(() => (
-      dispatch({
-        type: LOGOUT_SUCCESS,
-      })
-    ))
-    .catch(() => (
-      dispatch({
-        type: LOGOUT_ERROR,
-      })
-    ));
-};
+export const logout = createAction(LOGOUT);
 
 export const toggleSidebar = createAction(TOGGLE_SIDEBAR);
+
+export const setToken = createAction(SET_TOKEN);

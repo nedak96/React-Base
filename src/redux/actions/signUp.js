@@ -13,6 +13,7 @@ import {
   CREATE_USER_ERROR,
   CLEAN_SIGN_UP,
 } from '../actions';
+import { CONFLICT_ERROR } from '../../constants/responseCodes';
 import { $POST } from '../../utils/requests';
 
 const usersAPI = '/api/v1/users';
@@ -31,7 +32,7 @@ export const createUser = (information, history) => (dispatch) => {
     .catch((error) => (
       dispatch({
         type: CREATE_USER_ERROR,
-        payload: error.name === 'EMAIL_EXISTS_ERROR',
+        payload: error.status === CONFLICT_ERROR,
       })
     ));
 };

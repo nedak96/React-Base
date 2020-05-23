@@ -8,6 +8,7 @@ Features:
 * Requests Setup (using Axios)
 * Redux Setup (Using Redux Toolkit)
 * LocalStorage Setup (using Redux Persist)
+* JWT automatically stored, updated, and attached to requests
 * Basic App Components (App Frame and Sidebar)
 * Basic Login Components
 * Uses Material UI
@@ -17,5 +18,5 @@ To Run:
 * Run `yarn` to install dependencies
 * Run `yarn start` for development
 
-Things to Node:
+Note:
 * Pairs with [Node-Base](https://github.com/nedak96/Node-Base) project

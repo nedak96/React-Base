@@ -15,7 +15,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import Routes from './Routes';
-import { checkSession } from './redux/actions/global';
+import { validateToken } from './redux/actions/global';
 
 const theme = createMuiTheme({
   palette: {
@@ -35,18 +35,18 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
-  const checkingSession = useSelector((state) => state.global.checkingSession);
+  const validatingToken = useSelector((state) => state.global.validatingToken);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(checkSession());
+    dispatch(validateToken());
   }, [dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {
-        checkingSession ? (
+        validatingToken ? (
           <Backdrop open>
             <CircularProgress />
           </Backdrop>

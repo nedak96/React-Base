@@ -8,15 +8,15 @@
 // Global Actions
 
 export const LOGOUT = 'LOGOUT';
-export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const LOGOUT_ERROR = 'LOGOUT_ERROR';
 
-export const CHECK_SESSION = 'CHECK_SESSION';
-export const CHECK_SESSION_ERROR = 'CHECK_SESSION_ERROR';
-export const SESSION_FOUND = 'SESSION_FOUND';
-export const SESSION_NOT_FOUND = 'SESSION_NOT_FOUND';
+export const VALIDATE_TOKEN = 'VALIDATE_TOKEN';
+export const VALIDATE_TOKEN_ERROR = 'VALIDATE_TOKEN_ERROR';
+export const TOKEN_VALID = 'TOKEN_VALID';
+export const TOKEN_NOT_VALID = 'TOKEN_NOT_VALID';
 
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+
+export const SET_TOKEN = 'SET_TOKEN';
 
 // Sign In Actions
 

@@ -7,15 +7,15 @@
 
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import localStorage from 'redux-persist/lib/storage';
+import localstorage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';
 
 const persistConfig = {
   key: 'root',
-  storage: localStorage,
+  storage: localstorage,
   whitelist: [
-    'userReducer',
+    'localstorage',
   ],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer());

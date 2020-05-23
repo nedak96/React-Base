@@ -8,14 +8,14 @@
 import { createReducer } from '@reduxjs/toolkit';
 import {
   TOGGLE_SIDEBAR,
-  LOGOUT_SUCCESS,
-  SESSION_FOUND,
+  TOKEN_VALID,
   AUTHENTICATE_USER_SUCCESS,
-  SESSION_NOT_FOUND,
+  LOGOUT,
+  TOKEN_NOT_VALID,
 } from '../actions';
 
 const defaultState = {
-  checkingSession: true,
+  validatingToken: true,
   sidebarOpen: false,
   authenticated: false,
   user: {},
@@ -26,25 +26,25 @@ const global = createReducer(defaultState, {
     ...state,
     sidebarOpen: !state.sidebarOpen,
   }),
-  [LOGOUT_SUCCESS]: (state) => ({
+  [LOGOUT]: (state) => ({
     ...state,
     authenticated: false,
     user: {},
   }),
-  [SESSION_FOUND]: (state, action) => ({
+  [TOKEN_VALID]: (state, action) => ({
     ...state,
     authenticated: true,
     user: action.payload,
-    checkingSession: false,
+    validatingToken: false,
   }),
-  [SESSION_NOT_FOUND]: (state) => ({
+  [TOKEN_NOT_VALID]: (state) => ({
     ...state,
-    checkingSession: false,
+    validatingToken: false,
   }),
   [AUTHENTICATE_USER_SUCCESS]: (state, action) => ({
     ...state,
     authenticated: true,
-    user: action.payload,
+    user: action.payload.user,
   }),
 });
 
