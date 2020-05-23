@@ -13,15 +13,16 @@ import {
   SET_EMAIL_PASS_ERROR,
   CLEAN_SIGN_IN,
 } from '../actions';
+import { UNAUTHORIZED } from '../../constants/responseCodes';
 import { $POST } from '../../utils/requests';
 
 const usersAPI = '/api/v1/users';
 
-export const authenticateUser = (email, password, rememberSession) => (dispatch) => {
+export const authenticateUser = (email, password, remember) => (dispatch) => {
   dispatch({
     type: AUTHENTICATE_USER,
   });
-  return $POST(`${usersAPI}/authenticate-user`, { email, password, rememberSession })
+  return $POST(`${usersAPI}/authenticate-user`, { email, password, remember })
     .then((res) => (
       dispatch({
         type: AUTHENTICATE_USER_SUCCESS,
@@ -31,7 +32,7 @@ export const authenticateUser = (email, password, rememberSession) => (dispatch)
     .catch((error) => (
       dispatch({
         type: AUTHENTICATE_USER_ERROR,
-        payload: error.name === 'USER_PASS_ERROR',
+        payload: error.status === UNAUTHORIZED,
       })
     ));
 };
