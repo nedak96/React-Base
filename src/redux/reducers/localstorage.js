@@ -11,10 +11,12 @@ import {
   VALIDATE_TOKEN_ERROR,
   TOKEN_NOT_VALID,
   SET_TOKEN,
+  TOGGLE_DARK_MODE,
 } from '../actions';
 
 const defaultState = {
   token: '',
+  darkMode: true,
 };
 
 const localstorage = createReducer(defaultState, {
@@ -33,6 +35,10 @@ const localstorage = createReducer(defaultState, {
   [SET_TOKEN]: (state, action) => ({
     ...state,
     token: action.payload,
+  }),
+  [TOGGLE_DARK_MODE]: (state) => ({
+    ...state,
+    darkMode: !state.darkMode,
   }),
 });
 

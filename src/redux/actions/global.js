@@ -14,6 +14,7 @@ import {
   TOKEN_VALID,
   VALIDATE_TOKEN_ERROR,
   SET_TOKEN,
+  TOGGLE_DARK_MODE,
 } from '../actions';
 import { UNAUTHORIZED } from '../../constants/responseCodes';
 import { $GET } from '../../utils/requests';
@@ -46,5 +47,7 @@ export const validateToken = () => (dispatch) => {
 export const logout = createAction(LOGOUT);
 
 export const toggleSidebar = createAction(TOGGLE_SIDEBAR);
+
+export const toggleDarkMode = createAction(TOGGLE_DARK_MODE);
 
 export const setToken = createAction(SET_TOKEN);

@@ -22,7 +22,7 @@ export const createUser = (information, history) => (dispatch) => {
   dispatch({
     type: CREATE_USER,
   });
-  return $POST(`${usersAPI}/create-user`, { ...information })
+  return $POST(`${usersAPI}/create-user`, information)
     .then(() => {
       history.push('/');
       return dispatch({

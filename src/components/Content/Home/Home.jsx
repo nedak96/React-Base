@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 
 const Home = () => {
   const authenticated = useSelector((state) => state.global.authenticated);
-  const name = useSelector((state) => state.global.user.name);
+  const name = useSelector((state) => state.global.user.firstName);
   const classes = useStyles();
 
   return (

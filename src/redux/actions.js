@@ -16,6 +16,8 @@ export const TOKEN_NOT_VALID = 'TOKEN_NOT_VALID';
 
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 
+export const TOGGLE_DARK_MODE = 'TOGGLE_DARK_MODE';
+
 export const SET_TOKEN = 'SET_TOKEN';
 
 // Sign In Actions

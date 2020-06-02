@@ -6,20 +6,17 @@
  */
 
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   AppBar,
   Toolbar,
   IconButton,
-  Button,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
-import ProfileIcon from '@material-ui/icons/Person';
-import LogoutIcon from '@material-ui/icons/ExitToApp';
 import Sidebar from './Sidebar';
-import { toggleSidebar, logout } from '../../redux/actions/global';
+import ProfilePopup from './ProfilePopup';
+import { toggleSidebar } from '../../redux/actions/global';
 
 const useStyles = makeStyles((theme) => ({
   header: {
@@ -38,9 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AppFrame = () => {
   const classes = useStyles();
-  const authenticated = useSelector((state) => state.global.authenticated);
   const dispatch = useDispatch();
-  const history = useHistory();
 
   return (
     <>
@@ -54,25 +49,7 @@ const AppFrame = () => {
             <MenuIcon />
           </IconButton>
           <div className={classes.grow} />
-          <Button
-            className={classes.menuButton}
-            variant="contained"
-            startIcon={<ProfileIcon />}
-            onClick={() => history.push(authenticated ? '/user' : '/sign_in')}
-          >
-            {authenticated ? 'Profile' : 'Sign In'}
-          </Button>
-          {
-            authenticated ? (
-              <Button
-                variant="contained"
-                startIcon={<LogoutIcon />}
-                onClick={() => dispatch(logout())}
-              >
-                Logout
-              </Button>
-            ) : null
-          }
+          <ProfilePopup />
         </Toolbar>
       </AppBar>
       <Sidebar />
