@@ -19,6 +19,7 @@ import Home from './components/Content/Home';
 import SignIn from './components/Content/SignIn';
 import SignUp from './components/Content/SignUp';
 import ToDo from './components/Content/ToDo';
+import Profile from './components/Content/Profile';
 
 const AuthenticateRoute = ({ authenticated, path, Component }) => (
   <Route
@@ -38,7 +39,7 @@ const UserRoute = ({ authenticated }) => (
     path="/user"
     render={() => (
       authenticated
-        ? <ToDo />
+        ? <Profile />
         : <Redirect to="/sign_in" />
     )}
   />
