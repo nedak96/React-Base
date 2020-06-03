@@ -74,10 +74,10 @@ const SignUp = () => {
       setErrors({
         password: true,
         confirmPassword: true,
-        passwordText: 'Passwords don\'t match',
+        passwordText: 'Passwords do not match',
       });
     } else {
-      dispatch(createUser(information, history));
+      dispatch(createUser({ ...information, confirmPassword: undefined }, history));
     }
   };
 
