@@ -17,10 +17,12 @@ import {
 } from '@material-ui/core';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/core/styles';
+import InfiniteScroll from 'react-infinite-scroller';
 import _ from 'lodash';
 import { fetchItems, cleanBrowse } from '../../../redux/actions/browse';
+import { PAGE_SIZE } from '../../../constants/browse';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   card: {
     minHeight: '500px',
     height: '100%',
@@ -39,20 +41,38 @@ const useStyles = makeStyles(() => ({
   grid: {
     width: '100%',
   },
-  loadingDiv: {
-    width: '100%',
-    height: '100%',
-    overflow: 'hidden',
+  loadingSkel: {
+    height: '50px',
+    marginTop: theme.spacing(2),
   },
 }));
 
+const LoadingElement = () => {
+  const classes = useStyles();
+  return (
+    <Grid container spacing={3} className={classes.grid}>
+      {
+        _.times(3, () => (
+          <Grid item xs={4}>
+            <Skeleton variant="rect" className={classes.loadingSkel} />
+          </Grid>
+        ))
+      }
+    </Grid>
+  );
+};
+
 const Browse = () => {
   const classes = useStyles();
-  const { items, fetchingItems } = useSelector((state) => state.browse);
+  const {
+    items,
+    fetchingItems,
+    hasMore,
+  } = useSelector((state) => state.browse);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(fetchItems());
+    dispatch(fetchItems(0, PAGE_SIZE));
     return () => {
       dispatch(cleanBrowse());
     };
@@ -73,30 +93,38 @@ const Browse = () => {
   }
 
   return (
-    <Grid container spacing={3} className={classes.grid}>
-      {
-        items.map((item) => (
-          <Grid item xs={4}>
-            <Card className={classes.card}>
-              <CardActionArea className={classes.cardAction}>
-                <CardMedia
-                  image={item.image}
-                  className={classes.media}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {item.description}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))
-      }
-    </Grid>
+    <InfiniteScroll
+      pageStart={0}
+      loadMore={(page) => dispatch(fetchItems(page * PAGE_SIZE, PAGE_SIZE))}
+      hasMore={hasMore}
+      initialLoad={false}
+      loader={<LoadingElement />}
+    >
+      <Grid container spacing={3} className={classes.grid}>
+        {
+          items.map((item) => (
+            <Grid item xs={4}>
+              <Card className={classes.card}>
+                <CardActionArea className={classes.cardAction}>
+                  <CardMedia
+                    image={item.image}
+                    className={classes.media}
+                  />
+                  <CardContent>
+                    <Typography gutterBottom variant="h5" component="h2">
+                      {item.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">
+                      {item.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))
+        }
+      </Grid>
+    </InfiniteScroll>
   );
 };
 

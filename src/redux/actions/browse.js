@@ -16,11 +16,11 @@ import { $GET } from '../../utils/requests';
 
 const itemsAPI = 'api/v1/items';
 
-export const fetchItems = () => (dispatch) => {
+export const fetchItems = (skip, limit) => (dispatch) => {
   dispatch({
     type: FETCH_ITEMS,
   });
-  return $GET(`${itemsAPI}/`)
+  return $GET(`${itemsAPI}/?skip=${skip}&limit=${limit}`)
     .then((res) => (
       dispatch({
         type: FETCH_ITEMS_SUCCESS,

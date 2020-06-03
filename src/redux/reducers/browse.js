@@ -10,17 +10,23 @@ import {
   FETCH_ITEMS_SUCCESS,
   CLEAN_BROWSE,
 } from '../actions';
+import { PAGE_SIZE } from '../../constants/browse';
 
 const defaultState = {
   items: [],
   fetchingItems: true,
+  hasMore: true,
 };
 
 const browse = createReducer(defaultState, {
   [FETCH_ITEMS_SUCCESS]: (state, action) => ({
     ...state,
-    items: action.payload,
+    items: [
+      ...state.items,
+      ...action.payload,
+    ],
     fetchingItems: false,
+    hasMore: action.payload.length === PAGE_SIZE,
   }),
   [CLEAN_BROWSE]: (state) => ({
     ...state,
