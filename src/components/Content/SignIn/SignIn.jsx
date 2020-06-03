@@ -19,7 +19,6 @@ import {
   Grid,
   Snackbar,
   Avatar,
-  Container,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
@@ -34,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: Math.max(theme.breakpoints.values.xs, 444),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -77,109 +77,107 @@ const SignIn = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Sign in
-        </Typography>
-        <form className={classes.form} noValidate>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
-            autoFocus
-            error={emailError}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              if (emailError) {
-                setEmailError(false);
-              }
-            }}
-          />
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            name="password"
-            label="Password"
-            id="password"
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            error={passwordError}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              if (passwordError) {
-                setPasswordError(false);
-              }
-            }}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => setShowPassword(!showPassword)}
-                    onMouseDown={(e) => e.preventDefault()}
-                  >
-                    {showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-            onChange={(e) => setRememberMe(e.target.checked)}
-          />
-          <Button
-            fullWidth
-            variant="contained"
-            color="primary"
-            disabled={signingIn}
-            className={classes.submit}
-            onClick={checkFields}
-          >
-            Sign In
-          </Button>
-          <Grid container justify="space-between">
-            <Grid item>
-              <Button
-                onClick={() => history.push('/forgot_password')}
-                size="small"
-                className={classes.afterButton}
-              >
-                Forgot password?
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                onClick={() => history.push('/sign_up')}
-                size="small"
-                className={classes.afterButton}
-              >
-                {'Don\'t have an account? Sign Up'}
-              </Button>
-            </Grid>
-          </Grid>
-        </form>
-        <Snackbar
-          open={emailPassError}
-          onClose={() => dispatch(setEmailPassError(false))}
-          autoHideDuration={5000}
+    <div className={classes.paper}>
+      <Avatar className={classes.avatar}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign in
+      </Typography>
+      <form className={classes.form} noValidate>
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          id="email"
+          label="Email Address"
+          name="email"
+          autoComplete="email"
+          autoFocus
+          error={emailError}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (emailError) {
+              setEmailError(false);
+            }
+          }}
+        />
+        <TextField
+          variant="outlined"
+          margin="normal"
+          required
+          fullWidth
+          name="password"
+          label="Password"
+          id="password"
+          autoComplete="current-password"
+          type={showPassword ? 'text' : 'password'}
+          error={passwordError}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            if (passwordError) {
+              setPasswordError(false);
+            }
+          }}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  onMouseDown={(e) => e.preventDefault()}
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <FormControlLabel
+          control={<Checkbox value="remember" color="primary" />}
+          label="Remember me"
+          onChange={(e) => setRememberMe(e.target.checked)}
+        />
+        <Button
+          fullWidth
+          variant="contained"
+          color="primary"
+          disabled={signingIn}
+          className={classes.submit}
+          onClick={checkFields}
         >
-          <Alert severity="error">Username/Password Incorrect</Alert>
-        </Snackbar>
-      </div>
-    </Container>
+          Sign In
+        </Button>
+        <Grid container justify="space-between">
+          <Grid item>
+            <Button
+              onClick={() => history.push('/forgot_password')}
+              size="small"
+              className={classes.afterButton}
+            >
+              Forgot password?
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => history.push('/sign_up')}
+              size="small"
+              className={classes.afterButton}
+            >
+              {'Don\'t have an account? Sign Up'}
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+      <Snackbar
+        open={emailPassError}
+        onClose={() => dispatch(setEmailPassError(false))}
+        autoHideDuration={5000}
+      >
+        <Alert severity="error">Username/Password Incorrect</Alert>
+      </Snackbar>
+    </div>
   );
 };
 

@@ -12,7 +12,10 @@ import {
   Route,
   Switch,
   Redirect,
+  useLocation,
 } from 'react-router-dom';
+import { Container } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import AppFrame from './components/AppFrame';
 import Home from './components/Content/Home';
@@ -20,6 +23,7 @@ import SignIn from './components/Content/SignIn';
 import SignUp from './components/Content/SignUp';
 import ToDo from './components/Content/ToDo';
 import Profile from './components/Content/Profile';
+import Browse from './components/Content/Browse';
 
 const AuthenticateRoute = ({ authenticated, path, Component }) => (
   <Route
@@ -45,32 +49,55 @@ const UserRoute = ({ authenticated }) => (
   />
 );
 
+const useStyles = makeStyles((theme) => ({
+  main: {
+    marginTop: '64px',
+    padding: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+}));
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
 const Routes = () => {
   const authenticated = useSelector((state) => state.global.authenticated);
+  const classes = useStyles();
+
   return (
     <Router>
+      <ScrollToTop />
       <AppFrame />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/browse" component={ToDo} />
-        <AuthenticateRoute
-          authenticated={authenticated}
-          path="/sign_in"
-          Component={SignIn}
-        />
-        <AuthenticateRoute
-          authenticated={authenticated}
-          path="/sign_up"
-          Component={SignUp}
-        />
-        <AuthenticateRoute
-          authenticated={authenticated}
-          path="/forgot_password"
-          Component={ToDo}
-        />
-        <UserRoute authenticated={authenticated} />
-        <Redirect to="/" />
-      </Switch>
+      <Container component="main" className={classes.main}>
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/browse" component={Browse} />
+          <AuthenticateRoute
+            authenticated={authenticated}
+            path="/sign_in"
+            Component={SignIn}
+          />
+          <AuthenticateRoute
+            authenticated={authenticated}
+            path="/sign_up"
+            Component={SignUp}
+          />
+          <AuthenticateRoute
+            authenticated={authenticated}
+            path="/forgot_password"
+            Component={ToDo}
+          />
+          <UserRoute authenticated={authenticated} />
+          <Redirect to="/" />
+        </Switch>
+      </Container>
     </Router>
   );
 };
