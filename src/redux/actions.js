@@ -39,3 +39,11 @@ export const CREATE_USER_ERROR = 'CREATE_USER_ERROR';
 export const SET_EMAIL_ERROR = 'SET_EMAIL_ERROR';
 
 export const CLEAN_SIGN_UP = 'CLEAN_SIGN_UP';
+
+// Browse Actions
+
+export const FETCH_ITEMS = 'FETCH_ITEMS';
+export const FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS';
+export const FETCH_ITEMS_ERROR = 'FETCH_ITEMS_ERROR';
+
+export const CLEAN_BROWSE = 'CLEAN_BROWSE';

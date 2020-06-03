@@ -20,7 +20,9 @@ import { toggleSidebar } from '../../redux/actions/global';
 
 const useStyles = makeStyles((theme) => ({
   header: {
+    position: 'fixed',
     flexGrow: 1,
+    top: 0,
   },
   menuButton: {
     marginRight: theme.spacing(2),

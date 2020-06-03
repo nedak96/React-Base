@@ -15,7 +15,6 @@ import {
   Grid,
   Snackbar,
   Avatar,
-  Container,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@material-ui/lab/Alert';
@@ -28,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: Math.max(theme.breakpoints.values.xs, 444),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -82,7 +82,7 @@ const SignUp = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs">
+    <>
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -232,7 +232,7 @@ const SignUp = () => {
       >
         <Alert severity="error">Email Already in Use</Alert>
       </Snackbar>
-    </Container>
+    </>
   );
 };
 
