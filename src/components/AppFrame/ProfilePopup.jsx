@@ -19,7 +19,7 @@ import {
   Typography,
   Switch,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, fade } from '@material-ui/core/styles';
 import ProfileIcon from '@material-ui/icons/Person';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import DarkIcon from '@material-ui/icons/Brightness4';
@@ -28,6 +28,9 @@ import { logout, toggleDarkMode } from '../../redux/actions/global';
 const useStyles = makeStyles((theme) => ({
   profileIcon: {
     backgroundColor: theme.palette.primary.light,
+    '&:hover': {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
   },
   paper: {
     padding: theme.spacing(0.5, 1),
@@ -57,6 +60,9 @@ const useStyles = makeStyles((theme) => ({
   endIcon: {
     marginLeft: 'auto',
   },
+  profileIconButton: {
+    padding: 0,
+  },
 }));
 
 const ProfilePopup = () => {
@@ -68,6 +74,11 @@ const ProfilePopup = () => {
   const darkMode = useSelector((state) => state.localstorage.darkMode);
   const dispatch = useDispatch();
   const history = useHistory();
+
+  // Preloads image
+  React.useEffect(() => {
+    (new Image()).src = 'https://picsum.photos/80';
+  }, []);
 
   const logoutOnClick = () => {
     setOpen(false);
@@ -91,6 +102,7 @@ const ProfilePopup = () => {
   return (
     <>
       <IconButton
+        className={classes.profileIconButton}
         onClick={() => setOpen(true)}
         ref={anchorRef}
         color="secondary"

@@ -16,11 +16,12 @@ import { $GET } from '../../utils/requests';
 
 const itemsAPI = 'api/v1/items';
 
-export const fetchItems = (skip, limit) => (dispatch) => {
+export const fetchItems = (skip, limit, search) => (dispatch) => {
   dispatch({
     type: FETCH_ITEMS,
+    payload: { clear: skip === 0 },
   });
-  return $GET(`${itemsAPI}/?skip=${skip}&limit=${limit}`)
+  return $GET(`${itemsAPI}/?skip=${skip}&limit=${limit}${search ? `&${search.split('?')[1]}` : ''}`)
     .then((res) => (
       dispatch({
         type: FETCH_ITEMS_SUCCESS,

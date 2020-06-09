@@ -7,6 +7,7 @@
 
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import {
   Grid,
   Card,
@@ -19,6 +20,7 @@ import Skeleton from '@material-ui/lab/Skeleton';
 import { makeStyles } from '@material-ui/core/styles';
 import InfiniteScroll from 'react-infinite-scroller';
 import _ from 'lodash';
+import shortid from 'shortid';
 import { fetchItems, cleanBrowse } from '../../../redux/actions/browse';
 import { PAGE_SIZE } from '../../../constants/browse';
 
@@ -53,7 +55,7 @@ const LoadingElement = () => {
     <Grid container spacing={3} className={classes.grid}>
       {
         _.times(3, () => (
-          <Grid item xs={4}>
+          <Grid item xs={4} key={shortid.generate()}>
             <Skeleton variant="rect" className={classes.loadingSkel} />
           </Grid>
         ))
@@ -70,20 +72,20 @@ const Browse = () => {
     hasMore,
   } = useSelector((state) => state.browse);
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  React.useEffect(() => () => dispatch(cleanBrowse()), [dispatch]);
 
   React.useEffect(() => {
-    dispatch(fetchItems(0, PAGE_SIZE));
-    return () => {
-      dispatch(cleanBrowse());
-    };
-  }, [dispatch]);
+    dispatch(fetchItems(0, PAGE_SIZE, location.search));
+  }, [location, dispatch]);
 
   if (fetchingItems) {
     return (
       <Grid container spacing={3} className={classes.grid}>
         {
           _.times(6, () => (
-            <Grid item xs={4}>
+            <Grid item xs={4} key={shortid.generate()}>
               <Skeleton variant="rect" className={classes.card} />
             </Grid>
           ))
@@ -95,15 +97,15 @@ const Browse = () => {
   return (
     <InfiniteScroll
       pageStart={0}
-      loadMore={(page) => dispatch(fetchItems(page * PAGE_SIZE, PAGE_SIZE))}
+      loadMore={(page) => dispatch(fetchItems(page * PAGE_SIZE, PAGE_SIZE), location.search)}
       hasMore={hasMore}
       initialLoad={false}
-      loader={<LoadingElement />}
+      loader={<LoadingElement key={shortid.generate()} />}
     >
       <Grid container spacing={3} className={classes.grid}>
         {
           items.map((item) => (
-            <Grid item xs={4}>
+            <Grid item xs={4} key={item._id}>
               <Card className={classes.card}>
                 <CardActionArea className={classes.cardAction}>
                   <CardMedia
