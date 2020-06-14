@@ -29,23 +29,24 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   avatar: {
-    width: '160px',
-    height: '160px',
-    margin: theme.spacing(1),
+    width: 160,
+    height: 160,
+    margin: theme.spacing(1, 0),
   },
   header: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1, 0),
   },
   divider: {
     margin: theme.spacing(3, 0),
   },
   button: {
-    margin: theme.spacing(2, 1),
+    margin: theme.spacing(2, 2, 2, 0),
     textTransform: 'none',
   },
   textField: {
-    margin: theme.spacing(1),
-    width: '300px',
+    margin: theme.spacing(1, 0),
+    maxWidth: 400,
+    width: '100%',
   },
   form: {
     display: 'flex',
@@ -53,11 +54,13 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'flex-start',
   },
   grid: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(1, 0),
     alignItems: 'center',
   },
   gridRow: {
-    height: '40px',
+    display: 'flex',
+    alignItems: 'center',
+    height: 40,
   },
 }));
 
@@ -78,38 +81,38 @@ const Profile = () => {
       </Typography>
       {
         edit ? (
-          <>
+          <form>
             <Grid
               container
               spacing={1}
               className={classes.grid}
             >
-              <Grid item xs={4} className={classes.gridRow}>
-                <Typography>
+              <Grid item xs={12} md={6} lg={4}>
+                <Typography color="primary">
                   First Name
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={8} className={classes.gridRow}>
                 <TextField
                   defaultValue={user.firstName}
                 />
               </Grid>
-              <Grid item xs={4} className={classes.gridRow}>
-                <Typography>
+              <Grid item xs={12} md={6} lg={4}>
+                <Typography color="primary">
                   Last Name
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={8} className={classes.gridRow}>
                 <TextField
                   defaultValue={user.lastName}
                 />
               </Grid>
-              <Grid item xs={4} className={classes.gridRow}>
-                <Typography>
+              <Grid item xs={12} md={6} lg={4}>
+                <Typography color="primary">
                   Email
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={8} className={classes.gridRow}>
                 <TextField
                   defaultValue={user.email}
                 />
@@ -121,36 +124,36 @@ const Profile = () => {
             <Button variant="outlined" className={classes.button}>
               Save
             </Button>
-          </>
+          </form>
         ) : (
           <>
             <Grid container spacing={1} className={classes.grid}>
-              <Grid item xs={4} className={classes.gridRow}>
-                <Typography>
+              <Grid item xs={12} sm={4}>
+                <Typography color="primary">
                   First Name
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={8} className={classes.gridRow}>
                 <Typography>
                   {user.firstName}
                 </Typography>
               </Grid>
-              <Grid item xs={4} className={classes.gridRow}>
-                <Typography>
+              <Grid item xs={12} sm={4}>
+                <Typography color="primary">
                   Last Name
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={8} className={classes.gridRow}>
                 <Typography>
                   {user.lastName}
                 </Typography>
               </Grid>
-              <Grid item xs={4} className={classes.gridRow}>
-                <Typography>
+              <Grid item xs={12} sm={4}>
+                <Typography color="primary">
                   Email
                 </Typography>
               </Grid>
-              <Grid item xs={8}>
+              <Grid item xs={8} className={classes.gridRow}>
                 <Typography>
                   {user.email}
                 </Typography>
@@ -170,14 +173,12 @@ const Profile = () => {
         <PasswordTextField
           label="Old Password"
         />
-        <div>
-          <PasswordTextField
-            label="New Password"
-          />
-          <PasswordTextField
-            label="Confirm New Password"
-          />
-        </div>
+        <PasswordTextField
+          label="New Password"
+        />
+        <PasswordTextField
+          label="Confirm New Password"
+        />
         <Button variant="outlined" className={classes.button}>
           Change Password
         </Button>
@@ -208,7 +209,7 @@ const PasswordTextField = ({ onChange, error, label }) => {
               onClick={() => setHidden(!hidden)}
               onMouseDown={(e) => e.preventDefault()}
             >
-              {hidden ? <Visibility /> : <VisibilityOff />}
+              {hidden ? <VisibilityOff /> : <Visibility />}
             </IconButton>
           </InputAdornment>
         ),

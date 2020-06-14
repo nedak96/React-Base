@@ -51,7 +51,7 @@ const UserRoute = ({ authenticated }) => (
 
 const useStyles = makeStyles((theme) => ({
   main: {
-    marginTop: '64px',
+    marginTop: 48,
     padding: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',

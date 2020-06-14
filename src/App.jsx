@@ -29,6 +29,18 @@ const App = () => {
       secondary: { main: '#e0b234' },
     },
     overrides: {
+      MuiCssBaseline: {
+        '@global': {
+          '*': {
+            touchAction: 'manipulation',
+          },
+        },
+      },
+      MuiInputBase: {
+        input: {
+          letterSpacing: 'inherit',
+        },
+      },
       MuiOutlinedInput: {
         input: {
           '&:-webkit-autofill': {

@@ -9,7 +9,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  Drawer,
+  SwipeableDrawer,
   List,
   ListItem,
   ListItemIcon,
@@ -38,7 +38,7 @@ const Sidebar = () => {
   const history = useHistory();
 
   return (
-    <Drawer
+    <SwipeableDrawer
       anchor="left"
       open={sidebarOpen}
       onClose={() => dispatch(toggleSidebar())}
@@ -76,7 +76,7 @@ const Sidebar = () => {
           </ListItem>
         </List>
       </div>
-    </Drawer>
+    </SwipeableDrawer>
   );
 };
 

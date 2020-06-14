@@ -11,8 +11,6 @@ import { useHistory } from 'react-router-dom';
 import {
   Button,
   TextField,
-  FormControlLabel,
-  Checkbox,
   IconButton,
   InputAdornment,
   Typography,
@@ -33,7 +31,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: Math.max(theme.breakpoints.values.xs, 444),
+    width: '100%',
+    maxWidth: 444,
   },
   avatar: {
     margin: theme.spacing(1),
@@ -57,7 +56,6 @@ const SignIn = () => {
   const [email, setEmail] = useState('');
   const [passwordError, setPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const { emailPassError, signingIn } = useSelector((state) => state.signIn);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -72,7 +70,7 @@ const SignIn = () => {
     if (!email) {
       setEmailError(true);
     } else if (password) {
-      dispatch(authenticateUser(email, password, rememberMe));
+      dispatch(authenticateUser(email, password));
     }
   };
 
@@ -87,7 +85,6 @@ const SignIn = () => {
       <form className={classes.form} noValidate>
         <TextField
           variant="outlined"
-          margin="normal"
           required
           fullWidth
           id="email"
@@ -133,11 +130,6 @@ const SignIn = () => {
               </InputAdornment>
             ),
           }}
-        />
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
-          onChange={(e) => setRememberMe(e.target.checked)}
         />
         <Button
           fullWidth
