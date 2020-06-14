@@ -12,7 +12,7 @@ const main = async () => {
     title: randomWords({ min: 3, max: 5 }).join(' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()),
     author: randomWords({ exactly: 2 }).join(' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()),
     description: `${randomWords({ min: 4, max: 5, wordsPerString: 10 }).join('. ')}.`,
-    image: `https://i.picsum.photos/id/${Math.ceil(Math.random() * Math.floor(1000))}/500/500.jpg`,
+    image: `https://picsum.photos/seed/${randomWords()}/500`,
   })
     .then((res) => console.log(res.status))
     .catch((error) => console.log(error.response.status)));
