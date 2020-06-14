@@ -26,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
   },
   toolbar: {
-    minHeight: '48px',
-    height: '48px',
+    minHeight: 48,
+    height: 48,
   },
   menuButton: {
     marginRight: theme.spacing(2),
-    width: '40px',
-    height: '40px',
+    width: 40,
+    height: 40,
   },
   title: {
     flexGrow: 1,

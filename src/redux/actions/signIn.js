@@ -18,11 +18,11 @@ import { $POST } from '../../utils/requests';
 
 const usersAPI = '/api/v1/users';
 
-export const authenticateUser = (email, password, remember) => (dispatch) => {
+export const authenticateUser = (email, password) => (dispatch) => {
   dispatch({
     type: AUTHENTICATE_USER,
   });
-  return $POST(`${usersAPI}/authenticate-user`, { email, password, remember })
+  return $POST(`${usersAPI}/authenticate-user`, { email, password })
     .then((res) => (
       dispatch({
         type: AUTHENTICATE_USER_SUCCESS,

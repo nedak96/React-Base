@@ -19,15 +19,14 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(1),
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.primary.light,
+    maxWidth: 250,
+    transition: theme.transitions.create('max-width'),
+    width: '100%',
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
-    '& $inputInput': {
-      transition: theme.transitions.create('width'),
-      width: 150,
-      '&:focus': {
-        width: 300,
-      },
+    '&:focus-within': {
+      maxWidth: 400,
     },
   },
   searchIconDiv: {
@@ -70,6 +69,7 @@ const Search = () => {
         disableUnderline
         placeholder="Search Items"
         type="search"
+        fullWidth
         classes={{
           input: classes.inputInput,
         }}

@@ -27,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: Math.max(theme.breakpoints.values.xs, 444),
+    width: '100%',
+    maxWidth: 444,
   },
   avatar: {
     margin: theme.spacing(1),
