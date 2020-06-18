@@ -15,11 +15,15 @@ import {
   VALIDATE_TOKEN_ERROR,
   SET_TOKEN,
   TOGGLE_DARK_MODE,
+  FETCH_CATEGORIES,
+  FETCH_CATEGORIES_ERROR,
+  FETCH_CATEGORIES_SUCCESS,
 } from '../actions';
 import { UNAUTHORIZED } from '../../constants/responseCodes';
 import { $GET } from '../../utils/requests';
 
 const usersAPI = 'api/v1/users';
+const categoriesAPI = 'api/v1/categories';
 
 export const validateToken = () => (dispatch) => {
   dispatch({
@@ -42,6 +46,36 @@ export const validateToken = () => (dispatch) => {
         type: VALIDATE_TOKEN_ERROR,
       });
     });
+};
+
+export const fetchCategories = () => (dispatch) => {
+  dispatch({
+    type: FETCH_CATEGORIES,
+  });
+  return $GET(`${categoriesAPI}`)
+    .then((res) => {
+      const categories = res.docs.reduce((acc, curr) => {
+        acc[curr._id] = {
+          children: res.docs.filter((cat) => cat.parentId === curr._id).map((cat) => cat._id),
+          name: curr.name,
+          parentId: curr.parentId === null ? 'Browse' : curr.parentId,
+        };
+        return acc;
+      }, {});
+      categories.Browse = {
+        name: 'Browse',
+        children: res.docs.filter((cat) => cat.parentId === null).map((cat) => cat._id),
+      };
+      return dispatch({
+        type: FETCH_CATEGORIES_SUCCESS,
+        payload: categories,
+      });
+    })
+    .catch(() => (
+      dispatch({
+        type: FETCH_CATEGORIES_ERROR,
+      })
+    ));
 };
 
 export const logout = createAction(LOGOUT);

@@ -12,6 +12,8 @@ import {
   AUTHENTICATE_USER_SUCCESS,
   LOGOUT,
   TOKEN_NOT_VALID,
+  FETCH_CATEGORIES_SUCCESS,
+  FETCH_CATEGORIES_ERROR,
 } from '../actions';
 
 const defaultState = {
@@ -19,6 +21,8 @@ const defaultState = {
   sidebarOpen: false,
   authenticated: false,
   user: {},
+  categories: [],
+  fetchingCategories: true,
 };
 
 const global = createReducer(defaultState, {
@@ -45,6 +49,15 @@ const global = createReducer(defaultState, {
     ...state,
     authenticated: true,
     user: action.payload.user,
+  }),
+  [FETCH_CATEGORIES_SUCCESS]: (state, action) => ({
+    ...state,
+    fetchingCategories: false,
+    categories: action.payload,
+  }),
+  [FETCH_CATEGORIES_ERROR]: (state) => ({
+    ...state,
+    fetchingCategories: false,
   }),
 });
 

@@ -112,7 +112,7 @@ const Browse = () => {
   return (
     <InfiniteScroll
       pageStart={0}
-      loadMore={(page) => dispatch(fetchItems(page * PAGE_SIZE, PAGE_SIZE), location.search)}
+      loadMore={(page) => dispatch(fetchItems(page * PAGE_SIZE, PAGE_SIZE, location.search))}
       hasMore={hasMore}
       initialLoad={false}
       loader={<LoadingElement key={shortid.generate()} numElements={numElements} />}
