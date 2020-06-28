@@ -9,14 +9,12 @@ import axios from 'axios';
 import store from '../redux/store';
 import { setToken } from '../redux/actions/global';
 
-const instance = axios.create({
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+axios.defaults.headers = {
+  'Content-Type': 'application/json',
+};
 
 // Automatically add JWT to header
-instance.interceptors.request.use((config) => ({
+axios.interceptors.request.use((config) => ({
   ...config,
   headers: {
     ...config.headers,
@@ -25,32 +23,32 @@ instance.interceptors.request.use((config) => ({
 }));
 
 // Automatically set token if defined in response
-instance.interceptors.response.use((res) => {
+axios.interceptors.response.use((res) => {
   if (res.data && res.data.token) {
     store.dispatch(setToken(res.data.token));
   }
   return res;
 });
 
-export const $GET = (url) => instance.get(url)
+export const $GET = (url) => axios.get(url)
   .then((res) => res.data)
   .catch((error) => {
     throw error.response;
   });
 
-export const $POST = (url, body) => instance.post(url, body)
+export const $POST = (url, body) => axios.post(url, body)
   .then((res) => res.data)
   .catch((error) => {
     throw error.response;
   });
 
-export const $PUT = (url, body) => instance.put(url, body)
+export const $PUT = (url, body) => axios.put(url, body)
   .then((res) => res.data)
   .catch((error) => {
     throw error.response;
   });
 
-export const $DEL = (url) => instance.delete(url)
+export const $DEL = (url) => axios.delete(url)
   .then((res) => res.data)
   .catch((error) => {
     throw error.response;

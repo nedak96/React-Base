@@ -13,6 +13,7 @@ import {
   Switch,
   Redirect,
   useLocation,
+  useParams,
 } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,6 +25,7 @@ import SignUp from './components/Content/SignUp';
 import ToDo from './components/Content/ToDo';
 import Profile from './components/Content/Profile';
 import Browse from './components/Content/Browse';
+import Item from './components/Content/Item';
 
 const AuthenticateRoute = ({ authenticated, path, Component }) => (
   <Route
@@ -67,6 +69,11 @@ const ScrollToTop = () => {
   return null;
 };
 
+const ItemWrapper = () => {
+  const { itemId } = useParams();
+  return <Item itemInfo={{ _id: itemId }} />;
+};
+
 const Routes = () => {
   const authenticated = useSelector((state) => state.global.authenticated);
   const classes = useStyles();
@@ -79,6 +86,7 @@ const Routes = () => {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/browse" component={Browse} />
+          <Route exact path="/item/:itemId" component={ItemWrapper} />
           <AuthenticateRoute
             authenticated={authenticated}
             path="/sign_in"

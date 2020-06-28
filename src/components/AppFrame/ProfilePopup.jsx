@@ -18,20 +18,14 @@ import {
   Avatar,
   Typography,
   Switch,
+  makeStyles,
 } from '@material-ui/core';
-import { makeStyles, fade } from '@material-ui/core/styles';
 import ProfileIcon from '@material-ui/icons/Person';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import DarkIcon from '@material-ui/icons/Brightness4';
 import { logout, toggleDarkMode } from '../../redux/actions/global';
 
 const useStyles = makeStyles((theme) => ({
-  profileIcon: {
-    backgroundColor: theme.palette.primary.light,
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
-    },
-  },
   paper: {
     padding: theme.spacing(0.5, 1),
     display: 'flex',
@@ -61,7 +55,13 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 'auto',
   },
   profileIconButton: {
-    padding: 0,
+    width: 40,
+    height: 40,
+    borderRadius: 4,
+  },
+  profileIcon: {
+    position: 'absolute',
+    color: theme.palette.background.default,
   },
 }));
 
@@ -105,11 +105,8 @@ const ProfilePopup = () => {
         className={classes.profileIconButton}
         onClick={() => setOpen(true)}
         ref={anchorRef}
-        color="secondary"
       >
-        <Avatar className={classes.profileIcon}>
-          <ProfileIcon />
-        </Avatar>
+        <ProfileIcon className={classes.profileIcon} />
       </IconButton>
       <Popper
         open={open}
@@ -137,7 +134,10 @@ const ProfilePopup = () => {
                         variant="outlined"
                         fullWidth
                         startIcon={(
-                          <Avatar className={classes.buttonIcon}>
+                          <Avatar
+                            variant="rounded"
+                            className={classes.buttonIcon}
+                          >
                             <ProfileIcon />
                           </Avatar>
                         )}
@@ -153,7 +153,10 @@ const ProfilePopup = () => {
                         variant="outlined"
                         fullWidth
                         startIcon={(
-                          <Avatar className={classes.buttonIcon}>
+                          <Avatar
+                            variant="rounded"
+                            className={classes.buttonIcon}
+                          >
                             <DarkIcon />
                           </Avatar>
                         )}
@@ -167,7 +170,10 @@ const ProfilePopup = () => {
                         variant="outlined"
                         fullWidth
                         startIcon={(
-                          <Avatar className={classes.buttonIcon}>
+                          <Avatar
+                            variant="rounded"
+                            className={classes.buttonIcon}
+                          >
                             <LogoutIcon />
                           </Avatar>
                         )}

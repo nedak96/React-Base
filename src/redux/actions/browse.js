@@ -14,7 +14,7 @@ import {
 } from '../actions';
 import { $GET } from '../../utils/requests';
 
-const itemsAPI = 'api/v1/items';
+const itemsAPI = '/api/v1/items';
 
 export const fetchItems = (skip, limit, search) => (dispatch) => {
   dispatch({

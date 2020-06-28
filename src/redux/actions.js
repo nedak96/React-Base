@@ -51,3 +51,11 @@ export const FETCH_ITEMS_SUCCESS = 'FETCH_ITEMS_SUCCESS';
 export const FETCH_ITEMS_ERROR = 'FETCH_ITEMS_ERROR';
 
 export const CLEAN_BROWSE = 'CLEAN_BROWSE';
+
+// Item Actions
+
+export const FETCH_ITEM = 'FETCH_ITEM';
+export const FETCH_ITEM_SUCCESS = 'FETCH_ITEM_SUCCESS';
+export const FETCH_ITEM_ERROR = 'FETCH_ITEM_ERROR';
+
+export const CLEAN_ITEM = 'CLEAN_ITEM';

@@ -55,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
   },
   grid: {
     margin: theme.spacing(1, 0),
-    alignItems: 'center',
   },
   gridRow: {
     display: 'flex',
@@ -86,6 +85,7 @@ const Profile = () => {
               container
               spacing={1}
               className={classes.grid}
+              alignItems="center"
             >
               <Grid item xs={12} md={6} lg={4}>
                 <Typography color="primary">
@@ -127,7 +127,7 @@ const Profile = () => {
           </form>
         ) : (
           <>
-            <Grid container spacing={1} className={classes.grid}>
+            <Grid container spacing={1} className={classes.grid} alignItems="center">
               <Grid item xs={12} sm={4}>
                 <Typography color="primary">
                   First Name

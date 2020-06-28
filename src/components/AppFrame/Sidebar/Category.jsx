@@ -16,7 +16,7 @@ import {
   ListItemIcon,
   ListItemText,
   Breadcrumbs,
-  Chip,
+  Button,
   makeStyles,
 } from '@material-ui/core';
 import { ArrowBackIos } from '@material-ui/icons';
@@ -31,6 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
   chip: {
     margin: theme.spacing(0.5, 0),
+    padding: theme.spacing(0, 0.5),
+    textTransform: 'none',
+    '&:hover': {
+      backgroundColor: theme.palette.background.default,
+    },
   },
 }));
 
@@ -73,16 +78,17 @@ const Category = ({ transition, category }) => {
       <Breadcrumbs className={classes.breadcrumbs}>
         {
           path.map((cat) => (
-            <Chip
+            <Button
               key={cat}
-              label={categories[cat].name}
               onClick={() => {
                 if (category !== cat) {
                   transition(cat, 'right');
                 }
               }}
               className={classes.chip}
-            />
+            >
+              {categories[cat].name}
+            </Button>
           ))
         }
       </Breadcrumbs>

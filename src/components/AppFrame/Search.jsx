@@ -15,31 +15,41 @@ const useStyles = makeStyles((theme) => ({
   searchDiv: {
     color: theme.palette.background.default,
     position: 'relative',
-    marginRight: theme.spacing(2),
-    marginLeft: theme.spacing(1),
+    margin: theme.spacing(0, 1),
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: theme.palette.primary.light,
-    maxWidth: 250,
+    maxWidth: 40,
+    height: 40,
     transition: theme.transitions.create('max-width'),
     width: '100%',
+    cursor: 'pointer',
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: (theme.palette.type === 'dark'
+        ? fade(theme.palette.common.white, 0.08)
+        : fade(theme.palette.common.black, 0.04)
+      ),
     },
     '&:focus-within': {
-      maxWidth: 400,
+      backgroundColor: theme.palette.primary.light,
+      maxWidth: 350,
+      cursor: 'text',
     },
   },
   searchIconDiv: {
-    width: theme.spacing(9),
-    height: '100%',
+    width: 40,
+    height: 40,
     position: 'absolute',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  inputRoot: {
+    height: 40,
+    cursor: 'inherit',
+  },
   inputInput: {
     color: theme.palette.background.default,
-    padding: theme.spacing(1, 1, 1, 9),
+    padding: '0 0 0 40px',
+    cursor: 'inherit',
   },
 }));
 
@@ -71,6 +81,7 @@ const Search = () => {
         type="search"
         fullWidth
         classes={{
+          root: classes.inputRoot,
           input: classes.inputInput,
         }}
       />

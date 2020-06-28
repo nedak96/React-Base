@@ -4,6 +4,7 @@ import signIn from './signIn';
 import signUp from './signUp';
 import localstorage from './localstorage';
 import browse from './browse';
+import item from './item';
 
 const rootReducer = () => combineReducers({
   global,
@@ -11,6 +12,7 @@ const rootReducer = () => combineReducers({
   signUp,
   localstorage,
   browse,
+  item,
 });
 
 export default rootReducer;

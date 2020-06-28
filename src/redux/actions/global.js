@@ -22,8 +22,8 @@ import {
 import { UNAUTHORIZED } from '../../constants/responseCodes';
 import { $GET } from '../../utils/requests';
 
-const usersAPI = 'api/v1/users';
-const categoriesAPI = 'api/v1/categories';
+const usersAPI = '/api/v1/users';
+const categoriesAPI = '/api/v1/categories';
 
 export const validateToken = () => (dispatch) => {
   dispatch({

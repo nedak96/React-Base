@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     width: 40,
     height: 40,
+    borderRadius: 4,
   },
   title: {
     flexGrow: 1,
@@ -61,8 +62,8 @@ const AppFrame = () => {
           >
             <MenuIcon className={classes.menuButtonIcon} />
           </IconButton>
-          <Search />
           <div className={classes.grow} />
+          <Search />
           <ProfilePopup />
         </Toolbar>
       </AppBar>
