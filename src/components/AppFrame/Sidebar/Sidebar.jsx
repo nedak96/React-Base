@@ -5,12 +5,13 @@
  * @date 4/7/20
  */
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   SwipeableDrawer,
+  makeStyles,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { useTransition, animated } from 'react-spring';
 import { toggleSidebar, fetchCategories } from '../../../redux/actions/global';
 import Main from './Main';
 import Category from './Category';
@@ -25,95 +26,57 @@ const useStyles = makeStyles({
     width: '100%',
     padding: 10,
   },
-  contentLeftSlide: {
-    animation: '.3s ease-in-out $slide-1 forwards',
-  },
-  contentRightSlide: {
-    animation: '.3s ease-in-out $slide-2 forwards',
-  },
-  nextContentLeftSlide: {
-    animation: '.3s ease-in-out $slide-2 reverse forwards',
-  },
-  nextContentRightSlide: {
-    animation: '.3s ease-in-out $slide-1 reverse forwards',
-  },
-  '@keyframes slide-1': {
-    '0%': {
-      left: 0,
-    },
-    '100%': {
-      left: -300,
-    },
-  },
-  '@keyframes slide-2': {
-    '0%': {
-      left: 0,
-    },
-    '100%': {
-      left: 300,
-    },
-  },
 });
 
 const Sidebar = () => {
   const classes = useStyles();
   const sidebarOpen = useSelector((state) => state.global.sidebarOpen);
   const dispatch = useDispatch();
-  const [nextContentElement, setNextContentElement] = useState(null);
-  const contentRef = useRef();
-  const nextContentRef = useRef();
-
-  const slide = React.useCallback((nextContent, direction) => {
-    setNextContentElement(() => {
-      switch (nextContent) {
-        case 'Main':
-          return <Main transition={slide} />;
-        default:
-          return <Category transition={slide} category={nextContent} />;
-      }
-    });
-    if (direction === 'left') {
-      contentRef.current.classList.add(classes.contentLeftSlide);
-      nextContentRef.current.classList.add(classes.nextContentLeftSlide);
-    } else {
-      contentRef.current.classList.add(classes.contentRightSlide);
-      nextContentRef.current.classList.add(classes.nextContentRightSlide);
-    }
-  }, [classes]);
-
-  const [contentElement, setContentElement] = useState(<Main transition={slide} />);
+  const [[content, direction], setContent] = useState(['Main', 'left']);
 
   React.useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const animationEnded = React.useCallback(() => {
-    contentRef.current.classList.remove(classes.contentLeftSlide);
-    contentRef.current.classList.remove(classes.contentRightSlide);
-    nextContentRef.current.classList.remove(classes.nextContentLeftSlide);
-    nextContentRef.current.classList.remove(classes.nextContentRightSlide);
-    setContentElement(nextContentElement);
-    setNextContentElement(null);
-  }, [classes, nextContentElement]);
+  const transitions = useTransition(content, (key) => key, {
+    from: {
+      transform: `translateX(${direction === 'left' ? 100 : -100}%)`,
+    },
+    enter: {
+      transform: 'translateX(0%)',
+    },
+    leave: {
+      transform: `translateX(${direction === 'left' ? -100 : 100}%)`,
+    },
+  });
+
+  const slide = useCallback((nextContent, swipeDirection) => (
+    setContent([nextContent, swipeDirection])
+  ), []);
+
+  const getContent = useCallback((contentName) => {
+    switch (contentName) {
+      case 'Main':
+        return <Main transition={slide} />;
+      default:
+        return <Category transition={slide} category={contentName} />;
+    }
+  }, [slide]);
 
   return (
     <SwipeableDrawer
       anchor="left"
       open={sidebarOpen}
       onClose={() => dispatch(toggleSidebar())}
-      className={classes.sidebar}
     >
       <div className={classes.sidebarContent}>
-        <div className={classes.content} ref={contentRef}>
-          {contentElement}
-        </div>
-        <div
-          className={classes.content}
-          ref={nextContentRef}
-          onAnimationEnd={animationEnded}
-        >
-          {nextContentElement}
-        </div>
+        {
+          transitions.map(({ item, key, props }) => (
+            <animated.div style={props} key={key} className={classes.content}>
+              {getContent(item)}
+            </animated.div>
+          ))
+        }
       </div>
     </SwipeableDrawer>
   );
