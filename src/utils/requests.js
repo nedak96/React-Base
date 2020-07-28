@@ -6,29 +6,20 @@
  */
 
 import axios from 'axios';
-import store from '../redux/store';
-import { setToken } from '../redux/actions/global';
+import { getAuthProp } from './auth';
 
 axios.defaults.headers = {
   'Content-Type': 'application/json',
 };
 
-// Automatically add JWT to header
+// Automatically add auth token to header
 axios.interceptors.request.use((config) => ({
   ...config,
   headers: {
     ...config.headers,
-    Authorization: store.getState().localstorage.token ? `Bearer ${store.getState().localstorage.token}` : '',
+    Authorization: getAuthProp('access_token') ? `Bearer ${getAuthProp('access_token')}` : '',
   },
 }));
-
-// Automatically set token if defined in response
-axios.interceptors.response.use((res) => {
-  if (res.data && res.data.token) {
-    store.dispatch(setToken(res.data.token));
-  }
-  return res;
-});
 
 export const $GET = (url) => axios.get(url)
   .then((res) => res.data)

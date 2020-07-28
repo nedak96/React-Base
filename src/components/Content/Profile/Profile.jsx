@@ -5,9 +5,9 @@
  * @date 6/2/20
  */
 
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   Avatar,
   Paper,
@@ -15,12 +15,13 @@ import {
   Divider,
   Button,
   TextField,
-  InputAdornment,
-  IconButton,
   Grid,
+  Snackbar,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import { updateUser, setUpdatingUserStatus } from '../../../redux/actions/profile';
+import { editAuthProp } from '../../../utils/auth';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -65,163 +66,150 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = () => {
   const [edit, setEdit] = useState(false);
-  const user = useSelector((state) => state.global.user);
+  const [newUser, setNewUser] = useState({});
+  const { user } = useAuth0();
+  const updatingUserStatus = useSelector((state) => state.profile.updatingUserStatus);
+  const dispatch = useDispatch();
   const classes = useStyles();
 
-  return (
-    <Paper className={classes.paper}>
-      <Avatar className={classes.avatar} src="https://picsum.photos/160" />
-      <Typography component="h1" variant="h4" className={classes.header}>
-        {`${user.firstName} ${user.lastName}`}
-      </Typography>
-      <Divider className={classes.divider} />
-      <Typography component="h1" variant="h5" className={classes.header}>
-        Information
-      </Typography>
-      {
-        edit ? (
-          <form>
-            <Grid
-              container
-              spacing={1}
-              className={classes.grid}
-              alignItems="center"
-            >
-              <Grid item xs={12} md={6} lg={4}>
-                <Typography color="primary">
-                  First Name
-                </Typography>
-              </Grid>
-              <Grid item xs={8} className={classes.gridRow}>
-                <TextField
-                  defaultValue={user.firstName}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} lg={4}>
-                <Typography color="primary">
-                  Last Name
-                </Typography>
-              </Grid>
-              <Grid item xs={8} className={classes.gridRow}>
-                <TextField
-                  defaultValue={user.lastName}
-                />
-              </Grid>
-              <Grid item xs={12} md={6} lg={4}>
-                <Typography color="primary">
-                  Email
-                </Typography>
-              </Grid>
-              <Grid item xs={8} className={classes.gridRow}>
-                <TextField
-                  defaultValue={user.email}
-                />
-              </Grid>
-            </Grid>
-            <Button variant="outlined" onClick={() => setEdit(false)} className={classes.button}>
-              Cancel
-            </Button>
-            <Button variant="outlined" className={classes.button}>
-              Save
-            </Button>
-          </form>
-        ) : (
-          <>
-            <Grid container spacing={1} className={classes.grid} alignItems="center">
-              <Grid item xs={12} sm={4}>
-                <Typography color="primary">
-                  First Name
-                </Typography>
-              </Grid>
-              <Grid item xs={8} className={classes.gridRow}>
-                <Typography>
-                  {user.firstName}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Typography color="primary">
-                  Last Name
-                </Typography>
-              </Grid>
-              <Grid item xs={8} className={classes.gridRow}>
-                <Typography>
-                  {user.lastName}
-                </Typography>
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <Typography color="primary">
-                  Email
-                </Typography>
-              </Grid>
-              <Grid item xs={8} className={classes.gridRow}>
-                <Typography>
-                  {user.email}
-                </Typography>
-              </Grid>
-            </Grid>
-            <Button variant="outlined" onClick={() => setEdit(true)} className={classes.button}>
-              Edit
-            </Button>
-          </>
-        )
-      }
-      <Divider className={classes.divider} />
-      <Typography component="h1" variant="h5" className={classes.header}>
-        Password
-      </Typography>
-      <form className={classes.form}>
-        <PasswordTextField
-          label="Old Password"
-        />
-        <PasswordTextField
-          label="New Password"
-        />
-        <PasswordTextField
-          label="Confirm New Password"
-        />
-        <Button variant="outlined" className={classes.button}>
-          Change Password
-        </Button>
-      </form>
-    </Paper>
-  );
-};
-
-const PasswordTextField = ({ onChange, error, label }) => {
-  const [hidden, setHidden] = useState(true);
-  const classes = useStyles();
+  useEffect(() => {
+    if (updatingUserStatus === 'success') {
+      // Update user object for current instance
+      Object.keys(newUser).forEach((prop) => { user[prop] = newUser[prop]; });
+      // Update user object in localStorage
+      editAuthProp('user', user);
+      setEdit(false);
+    }
+  }, [updatingUserStatus, newUser, user]);
 
   return (
-    <TextField
-      className={classes.textField}
-      required
-      name={label}
-      label={label}
-      id={label}
-      type={hidden ? 'password' : 'text'}
-      error={error}
-      onChange={onChange}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => setHidden(!hidden)}
-              onMouseDown={(e) => e.preventDefault()}
-            >
-              {hidden ? <VisibilityOff /> : <Visibility />}
-            </IconButton>
-          </InputAdornment>
-        ),
-      }}
-    />
+    <>
+      <Paper className={classes.paper}>
+        <Avatar className={classes.avatar} src={user.picture} />
+        <Typography component="h1" variant="h4" className={classes.header}>
+          {`${user.given_name || ''} ${user.family_name || ''}`}
+        </Typography>
+        <Divider className={classes.divider} />
+        <Typography component="h1" variant="h5" className={classes.header}>
+          Information
+        </Typography>
+        {
+          edit ? (
+            <form>
+              <Grid
+                container
+                spacing={1}
+                className={classes.grid}
+                alignItems="center"
+              >
+                <Grid item xs={12} md={6} lg={4}>
+                  <Typography color="primary">
+                    First Name
+                  </Typography>
+                </Grid>
+                <Grid item xs={8} className={classes.gridRow}>
+                  <TextField
+                    defaultValue={user.given_name}
+                    onChange={(e) => setNewUser({ ...newUser, given_name: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Typography color="primary">
+                    Last Name
+                  </Typography>
+                </Grid>
+                <Grid item xs={8} className={classes.gridRow}>
+                  <TextField
+                    defaultValue={user.family_name}
+                    onChange={(e) => setNewUser({ ...newUser, family_name: e.target.value })}
+                  />
+                </Grid>
+                <Grid item xs={12} md={6} lg={4}>
+                  <Typography color="primary">
+                    Email
+                  </Typography>
+                </Grid>
+                <Grid item xs={8} className={classes.gridRow}>
+                  <TextField
+                    defaultValue={user.email}
+                    onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                  />
+                </Grid>
+              </Grid>
+              <Button
+                variant="outlined"
+                onClick={() => setEdit(false)}
+                className={classes.button}
+                disabled={updatingUserStatus === 'updating'}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={() => dispatch(updateUser(user.sub, newUser))}
+                className={classes.button}
+                disabled={updatingUserStatus === 'updating'}
+              >
+                Save
+              </Button>
+            </form>
+          ) : (
+            <>
+              <Grid container spacing={1} className={classes.grid} alignItems="center">
+                <Grid item xs={12} sm={4}>
+                  <Typography color="primary">
+                    First Name
+                  </Typography>
+                </Grid>
+                <Grid item xs={8} className={classes.gridRow}>
+                  <Typography>
+                    {user.given_name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Typography color="primary">
+                    Last Name
+                  </Typography>
+                </Grid>
+                <Grid item xs={8} className={classes.gridRow}>
+                  <Typography>
+                    {user.family_name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={4}>
+                  <Typography color="primary">
+                    Email
+                  </Typography>
+                </Grid>
+                <Grid item xs={8} className={classes.gridRow}>
+                  <Typography>
+                    {user.email}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <Button variant="outlined" onClick={() => setEdit(true)} className={classes.button}>
+                Edit
+              </Button>
+            </>
+          )
+        }
+      </Paper>
+      <Snackbar
+        open={updatingUserStatus === 'success'}
+        onClose={() => dispatch(setUpdatingUserStatus(''))}
+        autoHideDuration={5000}
+      >
+        <Alert severity="success">User updated successfully</Alert>
+      </Snackbar>
+      <Snackbar
+        open={updatingUserStatus === 'error'}
+        onClose={() => dispatch(setUpdatingUserStatus(''))}
+        autoHideDuration={5000}
+      >
+        <Alert severity="error">Error updating user</Alert>
+      </Snackbar>
+    </>
   );
-};
-
-PasswordTextField.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  error: PropTypes.bool.isRequired,
-  label: PropTypes.string.isRequired,
 };
 
 export default Profile;

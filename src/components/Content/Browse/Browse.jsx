@@ -5,7 +5,7 @@
  * @date 6/2/20
  */
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -47,11 +47,9 @@ const LoadingElement = React.memo(({ numElements }) => {
 });
 
 const Browse = () => {
-  const {
-    items,
-    fetchingItems,
-    hasMore,
-  } = useSelector((state) => state.browse);
+  const items = useSelector((state) => state.browse.items);
+  const fetchingItems = useSelector((state) => state.browse.fetchingItems);
+  const hasMore = useSelector((state) => state.browse.hasMore);
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -59,9 +57,9 @@ const Browse = () => {
     + (useMediaQuery((theme) => theme.breakpoints.up('sm')) ? 2 : 0)
     + (useMediaQuery((theme) => theme.breakpoints.up('md')) ? 1 : 0);
 
-  React.useEffect(() => () => dispatch(cleanBrowse()), [dispatch]);
+  useEffect(() => () => dispatch(cleanBrowse()), [dispatch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(fetchItems(0, PAGE_SIZE, location.search));
   }, [location, dispatch]);
 
@@ -75,6 +73,7 @@ const Browse = () => {
       loadMore={(page) => dispatch(fetchItems(page * PAGE_SIZE, PAGE_SIZE, location.search))}
       hasMore={hasMore}
       initialLoad={false}
+      threshold={500}
       loader={<LoadingElement key={shortid.generate()} numElements={numElements} />}
     >
       <Grid container spacing={3}>
