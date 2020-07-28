@@ -8,6 +8,7 @@
 import React, { useState, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   IconButton,
   Button,
@@ -23,7 +24,7 @@ import {
 import ProfileIcon from '@material-ui/icons/Person';
 import LogoutIcon from '@material-ui/icons/ExitToApp';
 import DarkIcon from '@material-ui/icons/Brightness4';
-import { logout, toggleDarkMode } from '../../redux/actions/global';
+import { toggleDarkMode } from '../../redux/actions/global';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -69,20 +70,19 @@ const ProfilePopup = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef();
-  const authenticated = useSelector((state) => state.global.authenticated);
-  const { firstName, lastName } = useSelector((state) => state.global.user);
+  const {
+    isAuthenticated,
+    user,
+    logout,
+    loginWithRedirect,
+  } = useAuth0();
   const darkMode = useSelector((state) => state.localstorage.darkMode);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // Preloads image
-  React.useEffect(() => {
-    (new Image()).src = 'https://picsum.photos/80';
-  }, []);
-
   const logoutOnClick = () => {
     setOpen(false);
-    dispatch(logout());
+    logout();
   };
 
   const profileOnClick = () => {
@@ -92,11 +92,6 @@ const ProfilePopup = () => {
 
   const darkModeOnClick = () => {
     dispatch(toggleDarkMode());
-  };
-
-  const signInOnClick = () => {
-    setOpen(false);
-    history.push('/sign_in');
   };
 
   return (
@@ -120,14 +115,14 @@ const ProfilePopup = () => {
             <Grow in={open} {...TransitionProps}>
               <Paper className={classes.paper}>
                 {
-                  authenticated ? (
+                  isAuthenticated ? (
                     <>
                       <Avatar
                         className={classes.avatar}
-                        src="https://picsum.photos/80"
+                        src={user.picture}
                       />
                       <Typography variant="h6">
-                        {`${firstName} ${lastName}`}
+                        {`${user.name}`}
                       </Typography>
                       <Button
                         className={classes.button}
@@ -192,7 +187,7 @@ const ProfilePopup = () => {
                           <ProfileIcon />
                         </Avatar>
                       )}
-                      onClick={signInOnClick}
+                      onClick={() => loginWithRedirect()}
                     >
                       Sign In
                     </Button>

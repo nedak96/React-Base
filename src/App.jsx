@@ -5,8 +5,9 @@
  * @date 4/7/20
  */
 
-import React, { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
 import {
   ThemeProvider,
   CssBaseline,
@@ -15,12 +16,10 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import Routes from './Routes';
-import { validateToken } from './redux/actions/global';
 
 const App = () => {
-  const validatingToken = useSelector((state) => state.global.validatingToken);
   const darkMode = useSelector((state) => state.localstorage.darkMode);
-  const dispatch = useDispatch();
+  const { isLoading } = useAuth0();
 
   const theme = useMemo(() => createMuiTheme({
     palette: {
@@ -51,15 +50,11 @@ const App = () => {
     },
   }), [darkMode]);
 
-  useEffect(() => {
-    dispatch(validateToken());
-  }, [dispatch]);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       {
-        validatingToken ? (
+        isLoading ? (
           <Backdrop open>
             <CircularProgress />
           </Backdrop>

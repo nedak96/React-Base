@@ -51,7 +51,7 @@ const SharePopup = ({ itemId, title }) => {
   const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const url = `http://192.168.1.3:3001/item/${itemId}`;
+  const url = `${process.env.REACT_APP_DOMAIN}/item/${itemId}`;
 
   return (
     <>

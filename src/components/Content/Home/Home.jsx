@@ -6,18 +6,16 @@
  */
 
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useAuth0 } from '@auth0/auth0-react';
 import { Typography } from '@material-ui/core';
 
 const Home = () => {
-  const authenticated = useSelector((state) => state.global.authenticated);
-  const name = useSelector((state) => state.global.user.firstName);
-
+  const { isAuthenticated, user } = useAuth0();
   return (
     <Typography component="h1" variant="h3">
       {
-        authenticated ? (
-          `Welcome, ${name}!`
+        isAuthenticated ? (
+          `Welcome, ${user.given_name}!`
         ) : 'Home Page'
       }
     </Typography>

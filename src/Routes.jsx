@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
+import { withAuthenticationRequired, useAuth0 } from '@auth0/auth0-react';
 import {
   BrowserRouter as Router,
   Route,
@@ -17,39 +17,11 @@ import {
 } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSelector } from 'react-redux';
 import AppFrame from './components/AppFrame';
 import Home from './components/Content/Home';
-import SignIn from './components/Content/SignIn';
-import SignUp from './components/Content/SignUp';
-import ToDo from './components/Content/ToDo';
 import Profile from './components/Content/Profile';
 import Browse from './components/Content/Browse';
 import Item from './components/Content/Item';
-
-const AuthenticateRoute = ({ authenticated, path, Component }) => (
-  <Route
-    exact
-    path={path}
-    render={() => (
-      !authenticated
-        ? <Component />
-        : <Redirect to="/" />
-    )}
-  />
-);
-
-const UserRoute = ({ authenticated }) => (
-  <Route
-    exact
-    path="/user"
-    render={() => (
-      authenticated
-        ? <Profile />
-        : <Redirect to="/sign_in" />
-    )}
-  />
-);
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -75,7 +47,7 @@ const ItemWrapper = () => {
 };
 
 const Routes = () => {
-  const authenticated = useSelector((state) => state.global.authenticated);
+  const { loginWithRedirect } = useAuth0();
   const classes = useStyles();
 
   return (
@@ -87,37 +59,14 @@ const Routes = () => {
           <Route exact path="/" component={Home} />
           <Route exact path="/browse" component={Browse} />
           <Route exact path="/item/:itemId" component={ItemWrapper} />
-          <AuthenticateRoute
-            authenticated={authenticated}
-            path="/sign_in"
-            Component={SignIn}
-          />
-          <AuthenticateRoute
-            authenticated={authenticated}
-            path="/sign_up"
-            Component={SignUp}
-          />
-          <AuthenticateRoute
-            authenticated={authenticated}
-            path="/forgot_password"
-            Component={ToDo}
-          />
-          <UserRoute authenticated={authenticated} />
+          <Route exact path="/user" component={withAuthenticationRequired(Profile)} />
+          <Route exact path="/sign_in" render={loginWithRedirect} />
+          <Route exact path="/sign_up" render={() => loginWithRedirect({ screen_hint: 'signup' })} />
           <Redirect to="/" />
         </Switch>
       </Container>
     </Router>
   );
-};
-
-UserRoute.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
-};
-
-AuthenticateRoute.propTypes = {
-  authenticated: PropTypes.bool.isRequired,
-  path: PropTypes.string.isRequired,
-  Component: PropTypes.func.isRequired,
 };
 
 export default Routes;
