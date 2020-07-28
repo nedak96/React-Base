@@ -12,5 +12,6 @@ module.exports = {
       'no-console': 0,
       'no-underscore-dangle': 0,
       'react/jsx-props-no-spreading': 0,
+      'no-unneeded-ternary': 0,
   },
 }
