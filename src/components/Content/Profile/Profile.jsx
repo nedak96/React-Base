@@ -21,7 +21,6 @@ import {
 import Alert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
 import { updateUser, setUpdatingUserStatus } from '../../../redux/actions/profile';
-import { editAuthProp } from '../../../utils/auth';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [newUser, setNewUser] = useState({});
-  const { user } = useAuth0();
+  const { user, getAccessTokenSilently } = useAuth0();
   const updatingUserStatus = useSelector((state) => state.profile.updatingUserStatus);
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -76,11 +75,13 @@ const Profile = () => {
     if (updatingUserStatus === 'success') {
       // Update user object for current instance
       Object.keys(newUser).forEach((prop) => { user[prop] = newUser[prop]; });
-      // Update user object in localStorage
-      editAuthProp('user', user);
+      // Update tokens in localStorage
+      getAccessTokenSilently({
+        ignoreCache: true,
+      });
       setEdit(false);
     }
-  }, [updatingUserStatus, newUser, user]);
+  }, [updatingUserStatus, user, newUser, getAccessTokenSilently]);
 
   return (
     <>
